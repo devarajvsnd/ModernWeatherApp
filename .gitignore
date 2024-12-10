@@ -1,0 +1,30 @@
+# Build Folders
+bin/
+obj/
+
+# Visual Studio Specific
+.vs/
+*.user
+*.suo
+
+# Published Outputs
+wwwroot/dist/
+
+# OS-Specific
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+
+# Temporary Files
+*.tmp
+*.temp
+
+# Exclude Secrets (optional)
+appsettings.Development.json
+secrets.json

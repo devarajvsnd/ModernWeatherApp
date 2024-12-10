@@ -1,0 +1,57 @@
+﻿@page "/login"
+@using WeatherApp.Client.Services
+@inject NavigationManager Navigation
+@inject IAuthService AuthService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<h3>Login</h3>
+
+<EditForm Model="@loginModel" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="email">Email</label>
+        <InputText id="email" class="form-control" @bind-Value="loginModel.Email" />
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password</label>
+        <InputPassword id="password" class="form-control" @bind-Value="loginModel.Password" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Login</button>
+</EditForm>
+
+@code {
+    private LoginModel loginModel = new LoginModel();
+
+    private async Task HandleLogin()
+    {
+        // Call AuthService to authenticate the user
+        var result = await AuthService.LoginUser(loginModel);
+
+        if (result)
+        {
+            // Assuming the AuthService returns a valid token
+            var token = await AuthService.GetToken();
+
+            // Cast the AuthenticationStateProvider to the custom provider and mark user as authenticated
+            var customAuthStateProvider = (CustomAuthenticationStateProvider)AuthenticationStateProvider;
+            customAuthStateProvider.MarkUserAsAuthenticated(token);
+
+            // Redirect to the dashboard or home page
+            Navigation.NavigateTo("/dashboard");
+        }
+        else
+        {
+            // Display error message (you can add error handling logic here)
+        }
+    }
+
+    public class LoginModel
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+}

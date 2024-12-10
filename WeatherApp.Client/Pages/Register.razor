@@ -1,0 +1,21 @@
+﻿@page "/register"
+@using WeatherApp.Client.Services
+@inject NavigationManager Navigation
+@inject IAuthService AuthService
+
+<h3>Register</h3>
+
+<EditForm Model="@registerModel" OnValidSubmit="HandleRegister">
+    <InputText @bind-Value="registerModel.Email" Placeholder="Email" />
+    <InputText @bind-Value="registerModel.Password" Placeholder="Password" Type="password" />
+    <button type="submit">Register</button>
+</EditForm>
+
+@code {
+    private RegisterModel registerModel = new();
+    private async Task HandleRegister()
+    {
+        // Call the backend API for registration
+        await Http.PostAsJsonAsync("api/auth/register", registerModel);
+    }
+}
