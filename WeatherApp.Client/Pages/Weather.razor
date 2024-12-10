@@ -1,57 +1,27 @@
 ﻿@page "/weather"
-@inject HttpClient Http
+@using WeatherApp.Client.Services
+@inject WeatherService WeatherService
 
-<PageTitle>Weather</PageTitle>
+<h3>Weather</h3>
 
-<h1>Weather</h1>
+<input @bind="City" placeholder="Enter city" />
+<button @onclick="GetWeather">Get Weather</button>
 
-<p>This component demonstrates fetching data from the server.</p>
-
-@if (forecasts == null)
+@if (WeatherData != null)
 {
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div>
+        <p><strong>City:</strong> @WeatherData?.name</p>
+        <p><strong>Temperature:</strong> @WeatherData?.main?.temp &deg;C</p>
+        <p><strong>Condition:</strong> @WeatherData?.weather[0]?.description</p>
+    </div>
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private string City { get; set; }
+    private dynamic WeatherData { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    private async Task GetWeather()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
-    }
-
-    public class WeatherForecast
-    {
-        public DateOnly Date { get; set; }
-
-        public int TemperatureC { get; set; }
-
-        public string? Summary { get; set; }
-
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        WeatherData = await WeatherService.GetCurrentWeather(City);
     }
 }

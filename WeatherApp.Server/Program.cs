@@ -1,12 +1,10 @@
 using WeatherApp.Server.Data;
+using WeatherApp.Server.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<MongoDbContext>();
-
-
-
 
 var supabaseClient = new Supabase.Client(
     builder.Configuration["Supabase:Url"],
@@ -15,9 +13,12 @@ var supabaseClient = new Supabase.Client(
 
 builder.Services.AddSingleton(supabaseClient);
 
+builder.Services.Configure<OpenWeatherMapSettings>(
+    builder.Configuration.GetSection("OpenWeatherMap")
+);
+
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

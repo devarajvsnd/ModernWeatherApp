@@ -1,8 +1,12 @@
-﻿namespace WeatherApp.Server.Controllers
+﻿//using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Mvc;
+using Supabase;
+using WeatherApp.Server.Models; // Your user/auth models
+
+
+namespace WeatherApp.Server.Controllers
 {
-    using Microsoft.AspNetCore.Identity.Data;
-    using Microsoft.AspNetCore.Mvc;
-    using Supabase;
+    
 
     [ApiController]
     [Route("api/auth")]
@@ -39,15 +43,5 @@
         }
     }
 
-    public class RegisterRequest
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
 
-    public class LoginRequest
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
 }

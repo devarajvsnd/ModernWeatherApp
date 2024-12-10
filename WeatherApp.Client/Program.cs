@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using WeatherApp.Client;
 using WeatherApp.Client.Services;
 
+
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 builder.Services.AddScoped<CustomAuthenticationStateProvider, CustomAuthenticationStateProvider>();
@@ -10,6 +11,7 @@ builder.Services.AddAuthorizationCore(); // Adds authorization services
 
 
 
+builder.Services.AddScoped<WeatherService>();
 
 
 
